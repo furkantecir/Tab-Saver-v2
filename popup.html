@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    width: 420px;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    margin: 0;
+    background-color: #ffffff;
+    
+    /* Default theme colors */
+    --theme-primary: #0066cc;
+    --theme-primary-hover: #0052a3;
+  }
+  
+  /* Theme color styles */
+  .theme-red {
+    --theme-primary: #dc3545;
+    --theme-primary-hover: #c82333;
+  }
+
+  .theme-blue {
+    --theme-primary: #0d6efd;
+    --theme-primary-hover: #0b5ed7;
+  }
+
+  .theme-green {
+    --theme-primary: #198754;
+    --theme-primary-hover: #157347;
+  }
+
+  .theme-purple {
+    --theme-primary: #6f42c1;
+    --theme-primary-hover: #5e37a6;
+  }
+
+  /* Apply theme colors to elements using CSS variables */
+  .button-primary {
+    background-color: var(--theme-primary);
+    color: white;
+  }
+  
+  .button-primary:hover:not(:disabled) {
+    background-color: var(--theme-primary-hover);
+    transform: translateY(-1px);
+  }
+  
+  .tab.active {
+    border-bottom-color: var(--theme-primary);
+    color: var(--theme-primary);
+    font-weight: 500;
+  }
+  
+  .storage-progress-bar {
+    height: 100%;
+    background-color: var(--theme-primary);
+    transition: width 0.3s ease;
+  }
+  
+  .footer a {
+    color: var(--theme-primary);
+    text-decoration: none;
+  }
+  
+  /* Dark mode theme colors */
+  .dark-mode {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+  
+  .dark-mode .button-primary {
+    background-color: var(--theme-primary);
+  }
+  
+  .dark-mode .tab.active {
+    color: var(--theme-primary);
+  }
+  
+  .dark-mode .footer a {
+    color: var(--theme-primary);
+  }
+    
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .header h1 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .header-controls {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .language-selector select,
+  .interval-selector select {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: white;
+  }
+  
+  .interval-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .interval-label {
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+  }
+  
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  .section h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #555;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .shortcut-hint {
+    font-size: 10px;
+    color: #888;
+    font-weight: normal;
+    background-color: #f5f5f5;
+    padding: 2px 4px;
+    border-radius: 3px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    position: relative;
+  }
+  
+  .button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .button-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+  }
+  
+  .button-secondary:hover:not(:disabled) {
+    background-color: #e0e0e0;
+    transform: translateY(-1px);
+  }
+  
+  .button-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .button-danger:hover:not(:disabled) {
+    background-color: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .button-small {
+    padding: 4px 8px;
+    font-size: 12px;
+    width: auto;
+    margin: 0 2px;
+  }
+  
+  .button.loading {
+    pointer-events: none;
+  }
+  
+  .button.loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: calc(50% - 8px);
+    right: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Enhanced Search Container */
+  .search-container {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .search-container.expanded {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  .search-main {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    gap: 8px;
+  }
+  
+  .search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+  }
+  
+  .search-input::placeholder {
+    color: #666;
+  }
+  
+  .search-toggle {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+  
+  .search-toggle:hover {
+    background: #e9ecef;
+    color: var(--theme-primary);
+  }
+  
+  .advanced-filters {
+    border-top: 1px solid #e9ecef;
+    padding: 16px;
+    background: #ffffff;
+    display: none;
+    animation: slideDown 0.3s ease;
+  }
+  
+  .advanced-filters.show {
+    display: block;
+  }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .filter-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #666;
+  }
+  
+  .filter-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+    color: #333;
+    font-size: 13px;
+    transition: all 0.2s ease;
+  }
+  
+  .filter-input:focus {
+    outline: none;
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+  }
+  
+  .filter-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  
+  .search-filter {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .category-filter {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    background-color: white;
+  }
+  
+  .backup-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  
+  /* Enhanced Backup Cards */
+  .backup-item {
+    padding: 16px;
+    margin-bottom: 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .backup-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: var(--theme-primary);
+  }
+  
+  .backup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .backup-name {
+    font-weight: 700;
+    color: #333;
+    font-size: 14px;
+    word-break: break-word;
+    flex: 1;
+  }
+  
+  .backup-health {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+  
+  .backup-health.excellent {
+    background: rgba(39, 174, 96, 0.1);
+    color: #27ae60;
+  }
+  
+  .backup-health.good {
+    background: rgba(243, 156, 18, 0.1);
+    color: #f39c12;
+  }
+  
+  .backup-health.warning {
+    background: rgba(243, 156, 18, 0.1);
+    color: #f39c12;
+  }
+  
+  .backup-health.poor {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+  }
+  
+  .backup-category {
+    font-size: 11px;
+    background-color: var(--theme-primary);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 12px;
+    margin-left: 8px;
+  }
+  
+  .backup-date {
+    font-weight: 400;
+    color: #666;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  
+  .backup-info {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  
+  .backup-tags {
+    margin-bottom: 8px;
+  }
+  
+  .tag {
+    display: inline-block;
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+  }
+  
+  .backup-notes {
+    font-size: 11px;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 8px;
+    padding: 8px;
+    background-color: #f1f3f4;
+    border-radius: 4px;
+    border-left: 3px solid var(--theme-primary);
+  }
+  
+  .backup-actions {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  
+  .status {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    text-align: center;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+  }
+  
+  .status-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .status-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .status-loading {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+  }
+  
+  .status-info {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border: 1px solid #d6d8db;
+  }
+  
+  .loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  
+  .empty-state {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+  }
+
+  .auto-backup-status {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    margin-top: 4px;
+    font-style: italic;
+  }
+  
+  .storage-info {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    margin-top: 8px;
+    padding: 4px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+  }
+  
+  .storage-progress {
+    height: 4px;
+    background-color: #e9ecef;
+    border-radius: 2px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  
+  .import-export {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  
+  .import-export button {
+    flex: 1;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+  
+  .advanced-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .advanced-actions button {
+    flex: 1;
+    padding: 6px 8px;
+    font-size: 11px;
+    min-width: 80px;
+  }
+  
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  .tabs {
+    display: flex;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .tab {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+    flex: 1;
+    text-align: center;
+  }
+  
+  .tab:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .tab-content {
+    display: none;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+  
+  .footer {
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+  }
+  
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  .setting-item {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .setting-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+  }
+
+  .setting-label input[type="checkbox"] {
+    margin: 0;
+  }
+
+  .setting-label select,
+  .setting-label input[type="number"] {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: white;
+  }
+
+  .shortcut-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  .shortcut-key {
+    background-color: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-weight: bold;
+    color: #495057;
+  }
+
+  .shortcut-desc {
+    color: #666;
+  }
+
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .analytics-item {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  .analytics-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--theme-primary);
+  }
+
+  .analytics-label {
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
+  }
+
+  /* Modal styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal {
+    background-color: white;
+    border-radius: 8px;
+    padding: 0;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal.large {
+    max-width: 700px;
+    width: 95%;
+  }
+
+  .modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    background-color: #f8f9fa;
+  }
+
+  .modal-footer .button {
+    width: auto;
+    margin: 0;
+    padding: 8px 16px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
+
+  .checkbox-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    margin: 0;
+    margin-top: 2px;
+  }
+
+  .tab-info {
+    flex: 1;
+  }
+
+  .tab-title {
+    font-weight: 500;
+    color: #333;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+
+  .tab-url {
+    color: #666;
+    font-size: 11px;
+    word-break: break-all;
+  }
+
+  .selection-controls {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .backup-preview {
+    font-size: 13px;
+  }
+
+  .preview-info {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+
+  .windows-preview {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .window-preview {
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+  }
+
+  .window-preview h5 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 14px;
+  }
+
+  .tabs-list {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  .tab-item {
+    padding: 5px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .tab-item:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-results {
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 15px;
+  }
+
+  .diff-section {
+    margin-bottom: 15px;
+  }
+
+  .diff-section h5 {
+    margin: 0 0 8px 0;
+    color: #333;
+  }
+
+  .diff-section ul {
+    margin: 0;
+    padding-left: 20px;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  .diff-section li {
+    margin-bottom: 3px;
+    font-size: 12px;
+  }
+
+  .diff-section li.added {
+    color: #28a745;
+  }
+
+  .diff-section li.removed {
+    color: #dc3545;
+  }
+
+  .diff-section li.changed {
+    color: #ffc107;
+  }
+
+  /* Dark mode styles */
+  .dark-mode .header {
+    border-bottom-color: #333;
+  }
+
+  .dark-mode .header h1 {
+    color: #e0e0e0;
+  }
+
+  .dark-mode .section h3 {
+    color: #e0e0e0;
+  }
+
+  .dark-mode .button-secondary {
+    background-color: #495057;
+    color: #e0e0e0;
+    border-color: #6c757d;
+  }
+
+  .dark-mode .backup-item {
+    background-color: #2d2d2d;
+    border-color: #404040;
+  }
+
+  .dark-mode .backup-name {
+    color: #e0e0e0;
+  }
+
+  .dark-mode .backup-date {
+    color: #aaa;
+  }
+
+  .dark-mode .backup-info {
+    color: #aaa;
+  }
+
+  .dark-mode .backup-notes {
+    background-color: #333;
+    color: #ccc;
+  }
+
+  .dark-mode .tag {
+    background-color: #495057;
+    color: #e0e0e0;
+  }
+
+  .dark-mode .storage-info {
+    background-color: #2d2d2d;
+    color: #aaa;
+  }
+
+  .dark-mode .analytics-item {
+    background-color: #2d2d2d;
+  }
+
+  .dark-mode .setting-label {
+    color: #e0e0e0;
+  }
+
+  .dark-mode .shortcut-item {
+    background-color: #2d2d2d;
+  }
+
+  .dark-mode .shortcut-key {
+    background-color: #404040;
+    color: #e0e0e0;
+  }
+
+  .dark-mode .shortcut-desc {
+    color: #aaa;
+  }
+
+  .dark-mode .tab {
+    color: #aaa;
+  }
+
+  .dark-mode .tab:hover {
+    background-color: #333;
+  }
+
+  .dark-mode .footer {
+    border-top-color: #333;
+    color: #aaa;
+  }
+
+  .dark-mode .modal {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+  }
+
+  .dark-mode .modal-header,
+  .dark-mode .modal-footer {
+    background-color: #333;
+    border-color: #404040;
+  }
+
+  .dark-mode .form-group input,
+  .dark-mode .form-group select,
+  .dark-mode .form-group textarea,
+  .dark-mode .search-input,
+  .dark-mode .category-filter,
+  .dark-mode .filter-input {
+    background-color: #404040;
+    border-color: #555;
+    color: #e0e0e0;
+  }
+
+  .dark-mode .checkbox-list {
+    border-color: #404040;
+  }
+
+  .dark-mode .checkbox-item:hover {
+    background-color: #404040;
+  }
+
+  .dark-mode .preview-info {
+    background-color: #333;
+  }
+
+  .dark-mode .window-preview {
+    border-color: #404040;
+  }
+
+  .dark-mode .comparison-results {
+    border-color: #404040;
+  }
+
+  .dark-mode .search-container {
+    background-color: #2d2d2d;
+    border-color: #404040;
+  }
+
+  .dark-mode .advanced-filters {
+    background-color: #333;
+  }
+
+  .dark-mode .search-toggle:hover {
+    background-color: #404040;
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1 data-i18n="extensionName">Sekme Kurtarıcı</h1>
+  <div class="header-controls">
+    <div class="language-selector">
+      <select id="languageSelect" aria-label="Select language">
+        <option value="en">English</option>
+        <option value="tr">Türkçe</option>
+      </select>
+    </div>
+    <div class="interval-group">
+      <span class="interval-label" data-i18n="autoBackup">Auto Backup:</span>
+      <div class="interval-selector">
+        <select id="intervalSelect" aria-label="Select backup interval">
+          <option value="0" data-i18n="disabled">Disabled</option>
+          <option value="60" data-i18n="oneMinute">1 Minute</option>
+          <option value="300" data-i18n="fiveMinutes">5 Minutes</option>
+          <option value="600" data-i18n="tenMinutes">10 Minutes</option>
+          <option value="1800" data-i18n="thirtyMinutes">30 Minutes</option>
+          <option value="3600" data-i18n="oneHour">1 Hour</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div id="autoBackupStatus" class="auto-backup-status" aria-live="polite"></div>
+</div>
+
+<div id="status" class="status" style="display: none;" role="alert" aria-live="assertive"></div>
+
+<div class="tabs">
+  <div id="backupsTab" class="tab active" data-tab="backupsContent" data-i18n="backupsTab">Backups</div>
+  <div id="settingsTab" class="tab" data-tab="settingsContent" data-i18n="settingsTab">Settings</div>
+  <div id="analyticsTab" class="tab" data-tab="analyticsContent" data-i18n="analyticsTab">Analytics</div>
+</div>
+
+<div id="backupsContent" class="tab-content active">
+  <div class="section">
+    <h3>
+      <span class="section-title" data-i18n="quickActions">Quick Actions</span>
+    </h3>
+    <button id="backupNow" class="button button-primary" data-i18n="backupNow" aria-describedby="backup-help">
+      Backup Now
+      <span class="shortcut-hint">Ctrl+B</span>
+    </button>
+    <div id="backup-help" class="sr-only" data-i18n="backupHelp">Creates a backup of all open tabs</div>
+    
+    <button id="restoreLatest" class="button button-secondary" data-i18n="restoreLatest" aria-describedby="restore-help">
+      Restore Latest Backup
+      <span class="shortcut-hint">Ctrl+R</span>
+    </button>
+    <div id="restore-help" class="sr-only" data-i18n="restoreHelp">Opens all tabs from the most recent backup</div>
+    
+    <div class="import-export">
+      <button id="exportBackups" class="button button-secondary" data-i18n="exportBackups" aria-describedby="export-help">
+        Export
+      </button>
+      <div id="export-help" class="sr-only" data-i18n="exportHelp">Export all backups to a JSON file</div>
+      
+      <button id="importBackups" class="button button-secondary" data-i18n="importBackups" aria-describedby="import-help">
+        Import
+      </button>
+      <div id="import-help" class="sr-only" data-i18n="importHelp">Import backups from a JSON file</div>
+      <input type="file" id="importFile" class="file-input" accept=".json">
+    </div>
+
+    <div class="advanced-actions">
+      <button id="compareBackups" class="button button-secondary" data-i18n="compareBackups">Compare</button>
+      <button id="mergeBackups" class="button button-secondary" data-i18n="mergeBackups">Merge</button>
+      <button id="importHistory" class="button button-secondary" data-i18n="importFromHistory">History</button>
+      
+     
+    </div>
+  </div>
+  
+  <div class="section">
+    <h3>
+      <span class="section-title" data-i18n="backupHistory">Backup History</span>
+    </h3>
+    
+    <!-- Enhanced Search Container -->
+    <div class="search-container" id="searchContainer">
+      <div class="search-main">
+        <span style="color: #666;">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search backups, URLs, notes..." data-i18n-placeholder="searchBackups">
+        <button class="search-toggle" id="searchToggle" title="Advanced Search">⚙️</button>
+      </div>
+      
+      <div class="advanced-filters" id="advancedFilters">
+        <div class="filter-grid">
+          <div class="filter-group">
+            <label class="filter-label" data-i18n="category">Category</label>
+            <select class="filter-input" id="categoryFilter">
+              <option value="all">All Categories</option>
+              <option value="work">Work</option>
+              <option value="personal">Personal</option>
+              <option value="research">Research</option>
+              <option value="shopping">Shopping</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="education">Education</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">Date Range</label>
+            <input type="date" class="filter-input" id="dateFromFilter" placeholder="From">
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">Min Tabs</label>
+            <input type="number" class="filter-input" id="minTabsFilter" placeholder="Min tabs">
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">Domain</label>
+            <input type="text" class="filter-input" id="domainFilter" placeholder="example.com">
+          </div>
+        </div>
+        
+        <div class="filter-actions">
+          <button class="button button-small button-secondary" id="clearFiltersBtn">🗑️ Clear</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="backupList" class="backup-list">
+      <div class="empty-state" data-i18n="loadingBackups">Loading backups...</div>
+    </div>
+  </div>
+  
+  <div id="storageInfo" class="storage-info">
+    <div data-i18n="storageUsage">Storage usage:</div>
+    <div class="storage-progress">
+      <div id="storageProgressBar" class="storage-progress-bar" style="width: 0%"></div>
+    </div>
+    <div id="storageDetails"></div>
+  </div>
+</div>
+
+<div id="settingsContent" class="tab-content">
+  <div class="section">
+    <h3 data-i18n="displaySettings">Display Settings</h3>
+    
+    <div class="setting-item">
+      <label for="darkModeToggle" class="setting-label">
+        <input type="checkbox" id="darkModeToggle">
+        <span data-i18n="darkMode">Dark Mode</span>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label for="dateFormatSelect" class="setting-label" data-i18n="dateFormat">Date Format:</label>
+      <select id="dateFormatSelect" aria-label="Select date format">
+        <option value="locale" data-i18n="localeDefault">Locale Default</option>
+        <option value="iso">ISO (YYYY-MM-DD)</option>
+        <option value="us">US (MM/DD/YYYY)</option>
+        <option value="eu">EU (DD.MM.YYYY)</option>
+      </select>
+    </div>
+    
+    <div class="setting-item">
+      <label for="themeColorSelect" class="setting-label" data-i18n="themeColor">Theme Color:</label>
+      <select id="themeColorSelect" aria-label="Select theme color">
+        <option value="default">Default</option>
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="purple">Purple</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3 data-i18n="backupSettings">Backup Settings</h3>
+    
+    <div class="setting-item">
+      <label for="compressionToggle" class="setting-label">
+        <input type="checkbox" id="compressionToggle">
+        <span data-i18n="compressionEnabled">Enable Compression</span>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label for="notificationsToggle" class="setting-label">
+        <input type="checkbox" id="notificationsToggle">
+        <span data-i18n="showNotifications">Show backup notifications</span>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label for="versioningToggle" class="setting-label">
+        <input type="checkbox" id="versioningToggle">
+        <span data-i18n="enableVersioning">Enable versioning</span>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label for="maxVersionsInput" class="setting-label" data-i18n="maxVersions">Max versions per backup:</label>
+      <input type="number" id="maxVersionsInput" min="1" max="20" value="5">
+    </div>
+  </div>
+
+ 
+  
+  <div class="section">
+    <h3 data-i18n="keyboardShortcuts">Keyboard Shortcuts</h3>
+    <div class="shortcut-list">
+      <div class="shortcut-item">
+        <span class="shortcut-key">Ctrl+B</span>
+        <span class="shortcut-desc" data-i18n="backupNow">Backup Now</span>
+      </div>
+      <div class="shortcut-item">
+        <span class="shortcut-key">Ctrl+R</span>
+        <span class="shortcut-desc" data-i18n="restoreLatest">Restore Latest Backup</span>
+      </div>
+      <div class="shortcut-item">
+        <span class="shortcut-key">Ctrl+F</span>
+        <span class="shortcut-desc">Search Backups</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="analyticsContent" class="tab-content">
+  <div class="section">
+    <h3 data-i18n="backupStats">Backup Statistics</h3>
+    
+    <div class="analytics-grid">
+      <div class="analytics-item">
+        <div class="analytics-value" id="totalBackupsCount">0</div>
+        <div class="analytics-label" data-i18n="totalBackupsCount">Total Backups</div>
+      </div>
+      <div class="analytics-item">
+        <div class="analytics-value" id="totalTabsBackedUp">0</div>
+        <div class="analytics-label" data-i18n="totalTabsBackedUp">Total Tabs Backed Up</div>
+      </div>
+      <div class="analytics-item">
+        <div class="analytics-value" id="averageTabsPerBackup">0</div>
+        <div class="analytics-label" data-i18n="averageTabsPerBackup">Average Tabs per Backup</div>
+      </div>
+      <div class="analytics-item">
+        <div class="analytics-value" id="storageUsed">0 MB</div>
+        <div class="analytics-label" data-i18n="storageUsed">Storage Used</div>
+      </div>
+      <div class="analytics-item">
+        <div class="analytics-value" id="oldestBackup">N/A</div>
+        <div class="analytics-label" data-i18n="oldestBackup">Oldest Backup</div>
+      </div>
+      <div class="analytics-item">
+        <div class="analytics-value" id="newestBackup">N/A</div>
+        <div class="analytics-label" data-i18n="newestBackup">Newest Backup</div>
+      </div>
+      <div class="analytics-item">
+        <div class="analytics-value" id="mostUsedCategory">N/A</div>
+        <div class="analytics-label" data-i18n="mostUsedCategory">Most Used Category</div>
+      </div>
+      <div class="analytics-item">
+        <div class="analytics-value" id="backupFrequency">N/A</div>
+        <div class="analytics-label" data-i18n="backupFrequency">Backup Frequency</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span data-i18n="version">Version 2.0.0</span> | 
+  <a href="https://github.com/furkantecir" target="_blank" rel="noopener noreferrer" data-i18n="reportIssue">Report Issue</a>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
