@@ -1,4 +1,4 @@
-# Tab-Saver-v2https://github.com/furkantecir/Tab-Saver-v2/blob/main/README.md
+# Tab-Saver-v2
 Keep your tabs safe, always — restore lost browser sessions.
 # Firefox Tab Backup Extension
 
