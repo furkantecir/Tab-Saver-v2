@@ -1,8 +1,14 @@
-# 🎮 TabSaver v3.0.0 (Retro Pixel Arcade Edition)
-
-> A high-performance, retro 8-bit pixel themed WebExtension (Firefox & Chrome Manifest V3) for tab saving, auto-backups, cross-device sync, and RAM management.
-> 
-> *Sekme yedekleme, otomatik yedekleme, cihazlar arası eşitleme ve RAM koruma özelliklerine sahip retro 8-bit piksel temalı modern web eklentisi.*
+<div align="center">
+  <img src="icons/logo.svg" width="96" height="96" alt="TabSaver Logo">
+  <h1>TabSaver v3.0.0</h1>
+  <p><b>Retro Pixel Arcade Edition</b></p>
+  
+  <p>
+    A high-performance, retro 8-bit pixel themed WebExtension (Firefox & Chrome Manifest V3) for tab saving, auto-backups, cross-device sync, and RAM management.
+    <br>
+    <i>Sekme yedekleme, otomatik yedekleme, cihazlar arası eşitleme ve RAM koruma özelliklerine sahip retro 8-bit piksel temalı modern web eklentisi.</i>
+  </p>
+</div>
 
 ---
 
@@ -17,7 +23,7 @@
 
 ## 🌟 Ana Özellikler / Key Features
 
-### 🎮 Retro Pixel Arcade Tasarım & Sesler
+### 👾 Retro Pixel Arcade Tasarım & Sesler
 - **Piksel Tasarım Sistemi**: Google Fonts (`Press Start 2P`, `VT323`) ve 16x16 özel piksel SVG ikonlar.
 - **6 Canlı Renk Paleti**: Klasik Yeşil Arcade, Çim Kırmızı, Retro Siber Mavi, Synth 16-Bit Mor, GameBoy Amber, Matris Siyan.
 - **🎵 8-Bit Web Audio Chiptune Efektleri**: Yedek alma, geri yükleme, silme ve tıklamalar için kod tabanlı sentezlenen nostaljik sesler.
