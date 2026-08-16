@@ -8,14 +8,10 @@
 
 ## 🖼️ Ekran Görüntüleri / Screenshots
 
-| 📱 Ana Ekran / Popup UI | 🎨 Ayarlar & Temalar / Settings |
-| :---: | :---: |
-| <img src="screenshots/Screenshot_1.png" width="400" alt="Popup UI"> | <img src="screenshots/Screenshot_2.png" width="400" alt="Settings"> |
-| **Popup Arayüzü & Ana Ekran** | **Ayarlar & Renk Temaları** |
 | | |
-| **🗂️ Yedek Listesi / Backup History** | **🔍 Önizleme & Detay / Preview Modal** |
-| <img src="screenshots/Screenshot_3.png" width="400" alt="Backups"> | <img src="screenshots/Screenshot_4.png" width="400" alt="Preview"> |
-| **Yedek Listesi & Filtreleme** | **Önizleme & Tek Pencere Açma** |
+| :---: | :---: |
+| <img src="screenshots/Screenshot_1.png" width="400" alt="TabSaver Screen 1"> | <img src="screenshots/Screenshot_2.png" width="400" alt="TabSaver Screen 2"> |
+| <img src="screenshots/Screenshot_3.png" width="400" alt="TabSaver Screen 3"> | <img src="screenshots/Screenshot_4.png" width="400" alt="TabSaver Screen 4"> |
 
 ---
 
