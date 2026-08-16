@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "TabSaver حافظ التبويبات",
+    "description": "The name of the extension"
+  },
+  "extensionDescription": {
+    "message": "حفظ واستعادة وإدارة تبويبات المتصفح تلقائياً ويدوياً بسرعة وأمان.",
+    "description": "The description of the extension"
+  }
+}

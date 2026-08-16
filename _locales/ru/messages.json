@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "TabSaver",
+    "description": "The name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Быстрое и безопасное автоматическое и ручное сохранение, восстановление и управление вкладками.",
+    "description": "The description of the extension"
+  }
+}

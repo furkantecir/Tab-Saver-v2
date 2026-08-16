@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "TabSaver 标签页保存",
+    "description": "The name of the extension"
+  },
+  "extensionDescription": {
+    "message": "快速安全地自动和手动保存、还原和管理浏览器标签页。",
+    "description": "The description of the extension"
+  }
+}

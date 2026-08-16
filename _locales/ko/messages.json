@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "TabSaver",
+    "description": "The name of the extension"
+  },
+  "extensionDescription": {
+    "message": "탭을 빠르고 안전하게 자동 및 수동으로 저장, 복원, 관리하세요.",
+    "description": "The description of the extension"
+  }
+}

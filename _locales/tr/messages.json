@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "Sekme Kurtarıcı",
+    "description": "Uzantı adı"
+  },
+  "extensionDescription": {
+    "message": "Tarayıcı sekmelerinizi kolayca kaydedin ve geri yükleyin",
+    "description": "Uzantı açıklaması"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "TabSaver",
+    "description": "The name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Save and restore browser tabs easily",
+    "description": "The description of the extension"
+  }
+}

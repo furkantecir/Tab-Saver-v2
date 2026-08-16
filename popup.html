@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TabSaver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-color: #1a1d24;
+    --card-bg: #242832;
+    --card-border: #000000;
+    --text-main: #f5ebd6;
+    --text-muted: #a0a5b5;
+    --pixel-accent: #46b465;
+    --pixel-accent-dark: #1e562c;
+    --secondary-accent: #3a3f4d;
+    --secondary-accent-dark: #1f232b;
+    --pixel-yellow: #e5a823;
+    --pixel-red: #e04f4f;
+    --theme-primary: var(--pixel-accent);
+  }
+
+  body {
+    width: 450px;
+    min-height: 550px;
+    padding: 14px;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--text-main);
+    background-color: var(--bg-color);
+    background-image: 
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+    background-size: 100% 4px, 6px 100%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Light mode when body does NOT have .dark-mode */
+  body:not(.dark-mode) {
+    --bg-color: #e5dec9;
+    --card-bg: #f4ebd0;
+    --card-border: #000000;
+    --text-main: #1b1e23;
+    --text-muted: #5c6270;
+  }
+
+  /* Theme Color Overrides (Full Palette Transformation) */
+  body.theme-red {
+    --pixel-accent: #e04f4f;
+    --pixel-accent-dark: #7a2020;
+    --secondary-accent: #3a3f4d;
+    --secondary-accent-dark: #1f232b;
+    --pixel-yellow: #f59e0b;
+  }
+
+  body.theme-blue {
+    --pixel-accent: #3485e4;
+    --pixel-accent-dark: #194a87;
+    --secondary-accent: #3a3f4d;
+    --secondary-accent-dark: #1f232b;
+    --pixel-yellow: #f59e0b;
+  }
+
+  body.theme-green {
+    --pixel-accent: #46b465;
+    --pixel-accent-dark: #1e562c;
+    --secondary-accent: #3a3f4d;
+    --secondary-accent-dark: #1f232b;
+    --pixel-yellow: #e5a823;
+  }
+
+  body.theme-purple {
+    --pixel-accent: #a855f7;
+    --pixel-accent-dark: #581c87;
+    --secondary-accent: #3a3f4d;
+    --secondary-accent-dark: #1f232b;
+    --pixel-yellow: #f59e0b;
+  }
+
+  body.theme-amber {
+    --pixel-accent: #e5a823;
+    --pixel-accent-dark: #7c580c;
+    --secondary-accent: #3a3f4d;
+    --secondary-accent-dark: #1f232b;
+    --pixel-yellow: #fef08a;
+  }
+
+  body.theme-cyan {
+    --pixel-accent: #06b6d4;
+    --pixel-accent-dark: #0e7490;
+    --secondary-accent: #3a3f4d;
+    --secondary-accent-dark: #1f232b;
+    --pixel-yellow: #f59e0b;
+  }
+
+  /* Header */
+  .header {
+    background: var(--card-bg);
+    border: 3px solid var(--card-border);
+    box-shadow: 4px 4px 0px #000;
+    padding: 12px;
+    margin-bottom: 14px;
+    text-align: center;
+    position: relative;
+  }
+
+  .header-title-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .header h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--pixel-accent);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0px #000;
+  }
+
+  .header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .language-selector select,
+  .interval-selector select {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    background: #121418;
+    color: var(--pixel-yellow);
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    padding: 4px 6px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  body:not(.dark-mode) .language-selector select,
+  body:not(.dark-mode) .interval-selector select {
+    background: #ffffff;
+    color: #1b1e23;
+  }
+
+  .interval-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .interval-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--text-muted);
+  }
+
+  .auto-backup-status {
+    font-family: 'VT323', monospace;
+    font-size: 15px;
+    color: var(--pixel-yellow);
+    margin-top: 6px;
+  }
+
+  /* Status banner */
+  .status {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    padding: 10px;
+    margin-bottom: 14px;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px #000;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .status.success {
+    background-color: var(--pixel-accent);
+    color: #000;
+  }
+
+  .status.error {
+    background-color: var(--pixel-red);
+    color: #fff;
+  }
+
+  .status.loading, .status.info {
+    background-color: var(--pixel-yellow);
+    color: #000;
+  }
+
+  /* Navigation Tabs */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .tab {
+    flex: 1;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    padding: 10px;
+    text-align: center;
+    background: #121418;
+    color: var(--text-muted);
+    border: 3px solid #000;
+    box-shadow: 3px 3px 0px #000;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.1s ease;
+  }
+
+  body:not(.dark-mode) .tab {
+    background: #d8d0bc;
+    color: #4a4f5d;
+  }
+
+  .tab:hover {
+    filter: brightness(1.15);
+  }
+
+  .tab.active {
+    background: var(--pixel-accent);
+    color: #000;
+    font-weight: bold;
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px #000;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* Section Box */
+  .section {
+    background: var(--card-bg);
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px #000;
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+
+  .section h3 {
+    margin: 0 0 10px 0;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--pixel-accent);
+    border-bottom: 2px dashed var(--pixel-accent-dark);
+    padding-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  /* Buttons */
+  .button {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 9px 10px;
+    border: 3px solid #000;
+    box-shadow: 3px 3px 0px #000;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-transform: uppercase;
+    transition: all 0.1s ease;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    color: #fff;
+    background: #3a3f4d;
+  }
+
+  .button:hover:not(:disabled) {
+    filter: brightness(1.15);
+  }
+
+  .button:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #000;
+  }
+
+  .button-primary {
+    background: var(--pixel-accent);
+    color: #000;
+  }
+
+  .button-secondary {
+    background: var(--secondary-accent);
+    color: #fff;
+  }
+
+  .button-danger {
+    background: var(--pixel-red);
+    color: #fff;
+  }
+
+  .button-small {
+    padding: 5px 7px;
+    font-size: 7px;
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  .pixel-btn-icon {
+    flex-shrink: 0;
+  }
+
+  .shortcut-hint {
+    font-family: 'VT323', monospace;
+    font-size: 15px;
+    opacity: 0.8;
+    margin-left: auto;
+  }
+
+  .import-export, .advanced-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  /* Search Container */
+  .search-container {
+    margin-bottom: 12px;
+  }
+
+  .search-main {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    background: #121418;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    padding: 4px 8px;
+  }
+
+  body:not(.dark-mode) .search-main {
+    background: #ffffff;
+  }
+
+  .search-input {
+    flex: 1;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    background: transparent;
+    border: none;
+    color: var(--pixel-yellow);
+    outline: none;
+  }
+
+  body:not(.dark-mode) .search-input {
+    color: #1b1e23;
+  }
+
+  .search-toggle {
+    background: var(--secondary-accent-dark);
+    border: 2px solid #000;
+    color: #fff;
+    cursor: pointer;
+    padding: 3px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .advanced-filters {
+    display: none;
+    background: #171a21;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    padding: 10px;
+    margin-top: 6px;
+  }
+
+  body:not(.dark-mode) .advanced-filters {
+    background: #e5dec9;
+  }
+
+  .advanced-filters.show {
+    display: block;
+  }
+
+  .filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .filter-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .filter-input {
+    width: 100%;
+    font-family: 'VT323', monospace;
+    font-size: 15px;
+    background: #0d0e12;
+    border: 2px solid #000;
+    color: #fff;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+
+  body:not(.dark-mode) .filter-input {
+    background: #ffffff;
+    color: #1b1e23;
+  }
+
+  .filter-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Backup Cards List */
+  .backup-list {
+    max-height: 280px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 4px;
+  }
+
+  .empty-state {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 20px;
+  }
+
+  .backup-item {
+    background: #1a1d24;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0px #000;
+    padding: 10px;
+    position: relative;
+    transition: border-color 0.2s ease;
+  }
+
+  .backup-item:hover {
+    border-color: var(--pixel-accent);
+  }
+
+  body:not(.dark-mode) .backup-item {
+    background: #e8dfc8;
+  }
+
+  .backup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .backup-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--pixel-yellow);
+  }
+
+  .backup-date {
+    font-family: 'VT323', monospace;
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+
+  .backup-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .pixel-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    padding: 3px 5px;
+    border: 1px solid #000;
+    box-shadow: 1px 1px 0px #000;
+    background: #2b303d;
+    color: var(--text-main);
+  }
+
+  .pixel-badge.badge-green {
+    background: var(--pixel-accent-dark);
+    color: #fff;
+  }
+
+  .pixel-badge.badge-blue {
+    background: var(--secondary-accent-dark);
+    color: #fff;
+  }
+
+  .backup-actions {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  /* Storage Bar */
+  .storage-info {
+    background: var(--card-bg);
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px #000;
+    padding: 10px;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+  }
+
+  .storage-progress {
+    height: 12px;
+    background: #121418;
+    border: 2px solid #000;
+    margin: 6px 0;
+    overflow: hidden;
+  }
+
+  .storage-progress-bar {
+    height: 100%;
+    background: var(--pixel-accent);
+    transition: width 0.3s ease;
+  }
+
+  /* Modals */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal {
+    background: var(--card-bg);
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0px #000;
+    width: 92%;
+    max-width: 410px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal.large {
+    max-width: 600px;
+  }
+
+  .modal-header {
+    background: #121418;
+    border-bottom: 3px solid #000;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-header h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--pixel-accent);
+    margin: 0;
+  }
+
+  .modal-close {
+    background: var(--pixel-red);
+    color: #fff;
+    border: 2px solid #000;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-body {
+    padding: 14px;
+    overflow-y: auto;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+  }
+
+  /* Form Layout inside Modals */
+  .form-group {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .form-group label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--pixel-yellow);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    background: #121418;
+    border: 2px solid #000;
+    color: #ffffff;
+    padding: 6px 8px;
+    outline: none;
+    box-shadow: 2px 2px 0px #000;
+  }
+
+  body:not(.dark-mode) .form-group input[type="text"],
+  body:not(.dark-mode) .form-group input[type="number"],
+  body:not(.dark-mode) .form-group select,
+  body:not(.dark-mode) .form-group textarea {
+    background: #ffffff;
+    color: #1b1e23;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--pixel-accent);
+  }
+
+  .modal-footer {
+    background: #121418;
+    border-top: 3px solid #000;
+    padding: 10px 14px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .modal-footer .button {
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  .modal-cancel {
+    background: #3a3f4d !important;
+    color: #fff !important;
+    border-color: #000 !important;
+  }
+
+  .modal-confirm {
+    background: var(--pixel-accent) !important;
+    color: #000 !important;
+    border-color: #000 !important;
+  }
+
+  /* Settings Items */
+  .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed #3a3f4d;
+  }
+
+  .setting-label {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .setting-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--pixel-accent);
+    cursor: pointer;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .setting-item select, 
+  .setting-item input[type="number"],
+  .setting-item input[type="text"],
+  .setting-item input[type="password"] {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    background: #121418;
+    border: 2px solid #000;
+    color: var(--pixel-yellow);
+    padding: 5px 8px;
+    box-shadow: 2px 2px 0px #000;
+    outline: none;
+  }
+
+  .setting-item input[type="text"]:focus,
+  .setting-item input[type="password"]:focus,
+  .setting-item select:focus {
+    border-color: var(--pixel-accent);
+  }
+
+  body:not(.dark-mode) .setting-item select,
+  body:not(.dark-mode) .setting-item input[type="number"],
+  body:not(.dark-mode) .setting-item input[type="text"],
+  body:not(.dark-mode) .setting-item input[type="password"] {
+    background: #ffffff;
+    color: #1b1e23;
+  }
+
+  .shortcut-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+  }
+
+  .shortcut-key {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    background: #121418;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    color: var(--pixel-accent);
+    padding: 4px 6px;
+  }
+
+  .footer {
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-top: 10px;
+  }
+
+  .footer a {
+    color: var(--pixel-yellow);
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+</head>
+<body class="dark-mode">
+<div class="header">
+  <div class="header-title-wrap">
+    <img src="icons/logo.svg" width="24" height="24" style="border: 2px solid #000; box-shadow: 2px 2px 0px #000; vertical-align: middle;" alt="Logo">
+    <h1 data-i18n="extensionName">Sekme Kurtarıcı</h1>
+  </div>
+  <div class="header-controls">
+    <div class="language-selector">
+      <select id="languageSelect" aria-label="Select language">
+        <option value="en">English</option>
+        <option value="tr">Türkçe</option>
+        <option value="ko">한국어 (Korean)</option>
+        <option value="zh">中文 (Chinese)</option>
+        <option value="ru">Русский (Russian)</option>
+        <option value="ar">العربية (Arabic)</option>
+      </select>
+    </div>
+    <div class="interval-group">
+      <span class="interval-label" data-i18n="autoBackup">Auto Backup:</span>
+      <div class="interval-selector">
+        <select id="intervalSelect" aria-label="Select backup interval">
+          <option value="0" data-i18n="disabled">Disabled</option>
+          <option value="60" data-i18n="oneMinute">1 Minute</option>
+          <option value="300" data-i18n="fiveMinutes">5 Minutes</option>
+          <option value="600" data-i18n="tenMinutes">10 Minutes</option>
+          <option value="900" data-i18n="fifteenMinutes">15 Minutes</option>
+          <option value="1800" data-i18n="thirtyMinutes">30 Minutes</option>
+          <option value="3600" data-i18n="oneHour">1 Hour</option>
+          <option value="7200" data-i18n="twoHours">2 Hours</option>
+          <option value="21600" data-i18n="sixHours">6 Hours</option>
+          <option value="43200" data-i18n="twelveHours">12 Hours</option>
+          <option value="86400" data-i18n="twentyFourHours">24 Hours</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div id="autoBackupStatus" class="auto-backup-status" aria-live="polite"></div>
+</div>
+
+<div id="status" class="status" style="display: none;" role="alert" aria-live="assertive"></div>
+
+<div class="tabs">
+  <div id="backupsTab" class="tab active" data-tab="backupsContent" data-i18n="backupsTab">Backups</div>
+  <div id="settingsTab" class="tab" data-tab="settingsContent" data-i18n="settingsTab">Settings</div>
+</div>
+
+<div id="backupsContent" class="tab-content active">
+  <div class="section">
+    <h3>
+      <span class="section-title" data-i18n="quickActions">Quick Actions</span>
+    </h3>
+    <button id="backupNow" class="button button-primary" data-i18n="backupNow" aria-describedby="backup-help">
+      <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M2 2h10l2 2v10H2V2zm2 2v4h6V4H4zm0 10h8V9H4v5z"/></svg>
+      Backup Now
+      <span class="shortcut-hint">Ctrl+B</span>
+    </button>
+    <div id="backup-help" class="sr-only" data-i18n="backupHelp">Creates a backup of all open tabs</div>
+    
+    <button id="restoreLatest" class="button button-secondary" data-i18n="restoreLatest" aria-describedby="restore-help">
+      <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 2a6 6 0 1 0 5.6 4h-2.1A4 4 0 1 1 8 4v3l4-3.5L8 0v2z"/></svg>
+      Restore Latest Backup
+      <span class="shortcut-hint">Ctrl+R</span>
+    </button>
+    <div id="restore-help" class="sr-only" data-i18n="restoreHelp">Opens all tabs from the most recent backup</div>
+    
+    <div class="import-export">
+      <button id="exportBackups" class="button button-secondary" data-i18n="exportBackups" aria-describedby="export-help">
+        <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M7 2h2v6h3l-4 4-4-4h3V2zM2 12h12v2H2v-2z"/></svg>
+        Export
+      </button>
+      <div id="export-help" class="sr-only" data-i18n="exportHelp">Export all backups to a JSON file</div>
+      
+      <button id="importBackups" class="button button-secondary" data-i18n="importBackups" aria-describedby="import-help">
+        <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M7 10h2V4h3l-4-4-4 4h3v6zM2 12h12v2H2v-2z"/></svg>
+        Import
+      </button>
+      <div id="import-help" class="sr-only" data-i18n="importHelp">Import backups from a JSON file</div>
+      <input type="file" id="importFile" class="file-input" accept=".json">
+    </div>
+
+    <div class="advanced-actions">
+      <button id="compareBackups" class="button button-secondary" data-i18n="compareBackups">
+        <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M2 3h3v3H2V3zm5 1h7v1H7V4zM2 9h3v3H2V9zm5 1h7v1H7v-1z"/></svg>
+        Compare
+      </button>
+      <button id="mergeBackups" class="button button-secondary" data-i18n="mergeBackups">
+        <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 2v12M2 8h12"/></svg>
+        Merge
+      </button>
+      <button id="bulkDeleteBackups" class="button button-danger" data-i18n="bulkDelete">
+        <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M5 2V1h6v1h4v2H1V2h4zm1 4h2v8H6V6zm4 0h2v8h-2V6z"/></svg>
+        Toplu Sil
+      </button>
+      <button id="importHistory" class="button button-secondary" data-i18n="importFromHistory">
+        <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 2a6 6 0 1 0 5.6 4h-2.1A4 4 0 1 1 8 4v3l4-3.5L8 0v2z"/></svg>
+        History
+      </button>
+      <button id="cleanDuplicatesBtn" class="button button-secondary" data-i18n="cleanDuplicates">
+        <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M2 2h12v2H2V2zm2 4h8v2H4V6zm2 4h4v2H6v-2z"/></svg>
+        Kopya Temizle
+      </button>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h3>
+      <span class="section-title" data-i18n="backupHistory">Backup History</span>
+    </h3>
+    
+    <!-- Enhanced Search Container -->
+    <div class="search-container" id="searchContainer">
+      <div class="search-main">
+        <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M6 1a5 5 0 1 0 3.2 8.8l4.5 4.5 1.4-1.4-4.5-4.5A5 5 0 0 0 6 1zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search backups, URLs, notes..." data-i18n-placeholder="searchBackups">
+        <button class="search-toggle" id="searchToggle" title="Advanced Search">
+          <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M7 0h2v2H7V0zM3.5 1.5l1.4 1.4-1.4 1.4-1.4-1.4 1.4-1.4zM0 7h2v2H0V7zm14 0h2v2h-2V7zM7 14h2v2H7v-2zm-3.5-.5l1.4-1.4 1.4 1.4-1.4 1.4-1.4-1.4zm8.5 0l-1.4-1.4 1.4-1.4 1.4 1.4-1.4 1.4zM8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg>
+        </button>
+      </div>
+      
+      <div class="advanced-filters" id="advancedFilters">
+        <div class="filter-grid">
+          <div class="filter-group">
+            <label class="filter-label" data-i18n="category">Category</label>
+            <select class="filter-input" id="categoryFilter">
+              <option value="all">All Categories</option>
+              <option value="work">Work</option>
+              <option value="personal">Personal</option>
+              <option value="research">Research</option>
+              <option value="shopping">Shopping</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="education">Education</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">Date Range</label>
+            <input type="date" class="filter-input" id="dateFromFilter">
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">Min Tabs</label>
+            <input type="number" class="filter-input" id="minTabsFilter" placeholder="Min tabs">
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">Domain</label>
+            <input type="text" class="filter-input" id="domainFilter" placeholder="example.com">
+          </div>
+        </div>
+        
+        <div class="filter-actions">
+          <button class="button button-small button-secondary" id="clearFiltersBtn">
+            <svg class="pixel-btn-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M5 2V1h6v1h4v2H1V2h4zm1 4h2v8H6V6zm4 0h2v8h-2V6z"/></svg>
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="backupList" class="backup-list">
+      <div class="empty-state" data-i18n="loadingBackups">Loading backups...</div>
+    </div>
+  </div>
+</div>
+
+<div id="settingsContent" class="tab-content">
+  <div class="section">
+    <h3 data-i18n="displaySettings">Display Settings</h3>
+    
+    <div class="setting-item">
+      <label for="darkModeToggle" class="setting-label">
+        <input type="checkbox" id="darkModeToggle" checked>
+        <span data-i18n="darkMode">Dark Mode</span>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label for="dateFormatSelect" class="setting-label" data-i18n="dateFormat">Date Format:</label>
+      <select id="dateFormatSelect" aria-label="Select date format">
+        <option value="locale" data-i18n="localeDefault">Locale Default</option>
+        <option value="iso">ISO (YYYY-MM-DD)</option>
+        <option value="us">US (MM/DD/YYYY)</option>
+        <option value="eu">EU (DD.MM.YYYY)</option>
+      </select>
+    </div>
+    
+    <div class="setting-item">
+      <label for="themeColorSelect" class="setting-label" data-i18n="themeColor">Theme Color:</label>
+      <select id="themeColorSelect" aria-label="Select theme color">
+        <option value="default">Green (Default)</option>
+        <option value="red">Red (Crimson Arcade)</option>
+        <option value="blue">Blue (Retro Cyber)</option>
+        <option value="purple">Purple (Synth 16-Bit)</option>
+        <option value="amber">Amber (GameBoy Gold)</option>
+        <option value="cyan">Cyan (Matrix Terminal)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3 data-i18n="backupSettings">Backup Settings</h3>
+    
+    <div class="setting-item">
+      <label for="soundToggle" class="setting-label">
+        <input type="checkbox" id="soundToggle">
+        <span data-i18n="enableSound">🎵 Retro Sound Effects</span>
+      </label>
+    </div>
+
+    <div class="setting-item">
+      <label for="lazyRestoreToggle" class="setting-label">
+        <input type="checkbox" id="lazyRestoreToggle">
+        <span data-i18n="enableLazyRestore">⚡ Lazy Tab Restore (RAM Saver)</span>
+      </label>
+    </div>
+
+    <div class="setting-item">
+      <label for="compressionToggle" class="setting-label">
+        <input type="checkbox" id="compressionToggle">
+        <span data-i18n="compressionEnabled">Enable Compression</span>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label for="notificationsToggle" class="setting-label">
+        <input type="checkbox" id="notificationsToggle">
+        <span data-i18n="showNotifications">Show backup notifications</span>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label for="versioningToggle" class="setting-label">
+        <input type="checkbox" id="versioningToggle">
+        <span data-i18n="enableVersioning">Enable versioning</span>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label for="maxVersionsInput" class="setting-label" data-i18n="maxVersions">Max versions per backup:</label>
+      <input type="number" id="maxVersionsInput" min="1" max="20" value="5">
+    </div>
+
+    <div class="setting-item">
+      <label for="customIntervalInput" class="setting-label" data-i18n="customInterval">Custom Interval (min):</label>
+      <div style="display: flex; gap: 4px; align-items: center;">
+        <input type="number" id="customIntervalInput" min="1" max="1440" placeholder="45" style="width: 75px;">
+        <button id="addCustomIntervalBtn" class="button button-small button-primary" data-i18n="addInterval">Add</button>
+      </div>
+    </div>
+
+    <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+      <label for="excludedDomainsInput" class="setting-label" data-i18n="excludedDomains">Excluded Domains (comma separated):</label>
+      <input type="text" id="excludedDomainsInput" placeholder="localhost, bank.com, 127.0.0.1" style="width: 100%; box-sizing: border-box;">
+    </div>
+
+    <div class="setting-item">
+      <label for="autoPruneDaysSelect" class="setting-label" data-i18n="autoPrune">Auto-delete old backups:</label>
+      <select id="autoPruneDaysSelect" aria-label="Select auto-prune period">
+        <option value="0" data-i18n="disabled">Disabled</option>
+        <option value="7">7 Days</option>
+        <option value="14">14 Days</option>
+        <option value="30">30 Days</option>
+        <option value="60">60 Days</option>
+        <option value="90">90 Days</option>
+      </select>
+    </div>
+
+    <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+      <label class="setting-label" data-i18n="cloudSync">Cloud Sync (GitHub Gist):</label>
+      <input type="password" id="githubTokenInput" placeholder="GitHub Personal Access Token (PAT)" style="width: 100%; box-sizing: border-box; margin-bottom: 4px;">
+      <input type="text" id="gistIdInput" placeholder="Gist ID (Optional / Auto-created)" style="width: 100%; box-sizing: border-box; margin-bottom: 6px;">
+      <div style="display: flex; gap: 6px; width: 100%;">
+        <button id="pushGistBtn" class="button button-small button-primary" style="flex:1;" data-i18n="pushToCloud">☁️ Push to Cloud</button>
+        <button id="pullGistBtn" class="button button-small button-secondary" style="flex:1;" data-i18n="pullFromCloud">⬇️ Pull from Cloud</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3 data-i18n="keyboardShortcuts">Keyboard Shortcuts</h3>
+    <div class="shortcut-list">
+      <div class="shortcut-item">
+        <span class="shortcut-key">Ctrl+B</span>
+        <span class="shortcut-desc" data-i18n="backupNow">Backup Now</span>
+      </div>
+      <div class="shortcut-item">
+        <span class="shortcut-key">Ctrl+R</span>
+        <span class="shortcut-desc" data-i18n="restoreLatest">Restore Latest Backup</span>
+      </div>
+      <div class="shortcut-item">
+        <span class="shortcut-key">Ctrl+F</span>
+        <span class="shortcut-desc">Search Backups</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span data-i18n="version">Version 3.0.0</span> | 
+  <a href="https://github.com/furkantecir" target="_blank" rel="noopener noreferrer" data-i18n="reportIssue">Report Issue</a>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
