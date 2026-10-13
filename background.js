@@ -869,8 +869,8 @@ async function importBackups(jsonData) {
     // Combine and sort by timestamp (newest first)
     const combinedBackups = [...existingBackups, ...newBackups].sort((a, b) => b.timestamp - a.timestamp)
 
-    // Keep only MAX_BACKUPS
-    const trimmedBackups = combinedBackups.slice(0, MAX_BACKUPS)
+    // Keep all imported backups (no trimming on import)
+    const trimmedBackups = combinedBackups
 
     // Save to storage
     await browser.storage.local.set({ [STORAGE_KEY]: trimmedBackups })

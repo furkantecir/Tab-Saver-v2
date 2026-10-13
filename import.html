@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TabSaver - Import</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-color: #1a1d24;
+    --card-bg: #242832;
+    --card-border: #000000;
+    --text-main: #f5ebd6;
+    --text-muted: #a0a5b5;
+    --pixel-accent: #46b465;
+    --pixel-accent-dark: #1e562c;
+    --secondary-accent: #3a3f4d;
+    --secondary-accent-dark: #1f232b;
+    --pixel-yellow: #e5a823;
+    --pixel-red: #e04f4f;
+  }
+
+  body {
+    margin: 0;
+    padding: 40px 14px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: var(--text-main);
+    background-color: var(--bg-color);
+    background-image:
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+    background-size: 100% 4px, 6px 100%;
+  }
+
+  body:not(.dark-mode) {
+    --bg-color: #e5dec9;
+    --card-bg: #f4ebd0;
+    --text-main: #1b1e23;
+    --text-muted: #5c6270;
+  }
+
+  body.theme-red    { --pixel-accent: #e04f4f; --pixel-accent-dark: #7a2020; --pixel-yellow: #f59e0b; }
+  body.theme-blue   { --pixel-accent: #3485e4; --pixel-accent-dark: #194a87; --pixel-yellow: #f59e0b; }
+  body.theme-green  { --pixel-accent: #46b465; --pixel-accent-dark: #1e562c; --pixel-yellow: #e5a823; }
+  body.theme-purple { --pixel-accent: #a855f7; --pixel-accent-dark: #581c87; --pixel-yellow: #f59e0b; }
+  body.theme-amber  { --pixel-accent: #e5a823; --pixel-accent-dark: #7c580c; --pixel-yellow: #fef08a; }
+  body.theme-cyan   { --pixel-accent: #06b6d4; --pixel-accent-dark: #0e7490; --pixel-yellow: #f59e0b; }
+
+  .wrap { width: 100%; max-width: 520px; }
+
+  .card {
+    background: var(--card-bg);
+    border: 3px solid var(--card-border);
+    box-shadow: 4px 4px 0px #000;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--pixel-accent);
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0px #000;
+    text-align: center;
+  }
+
+  p { margin: 0 0 14px 0; color: var(--text-muted); }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .file-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: #121418;
+    color: var(--pixel-yellow);
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    padding: 6px 8px;
+  }
+
+  body:not(.dark-mode) .file-name { background: #ffffff; color: #1b1e23; }
+
+  input[type=file] { display: none; }
+
+  .btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    padding: 12px 14px;
+    background: var(--secondary-accent);
+    color: #fff;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px #000;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .btn:hover:not(:disabled) { filter: brightness(1.15); }
+  .btn:active:not(:disabled) { transform: translate(3px, 3px); box-shadow: 1px 1px 0px #000; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary { background: var(--pixel-accent); color: #000; width: 100%; }
+  .btn-back { width: 100%; }
+
+  .status {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    line-height: 1.6;
+    padding: 10px;
+    margin-top: 14px;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px #000;
+    text-align: center;
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.success { background: var(--pixel-accent); color: #000; }
+  .status.error { background: var(--pixel-red); color: #fff; }
+  .status.info { background: var(--pixel-yellow); color: #000; }
+
+  #backSection { display: none; }
+  #backSection.show { display: block; }
+  #backHint { text-align: center; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1 id="title">Import Backups</h1>
+      <p id="desc">Select the .json file you exported earlier.</p>
+      <div class="file-row">
+        <button class="btn" id="chooseBtn" type="button">Choose file</button>
+        <span class="file-name" id="fileName">—</span>
+        <input type="file" id="importFile" accept=".json,application/json">
+      </div>
+      <button class="btn btn-primary" id="importBtn" type="button" disabled>Import</button>
+      <div class="status" id="status"></div>
+    </section>
+
+    <section class="card" id="backSection">
+      <p id="backHint">Done!</p>
+      <button class="btn btn-back" id="backBtn" type="button">Back to extension</button>
+    </section>
+  </main>
+  <script src="import.js"></script>
+</body>
+</html>

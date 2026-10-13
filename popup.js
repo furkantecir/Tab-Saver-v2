@@ -1123,7 +1123,8 @@ function setupEventListeners() {
   // Import/Export
   document.getElementById("exportBackups").addEventListener("click", handleExportBackups)
   document.getElementById("importBackups").addEventListener("click", () => {
-    document.getElementById("importFile").click()
+    browser.tabs.create({ url: browser.runtime.getURL("import.html") })
+    window.close()
   })
   document.getElementById("importFile").addEventListener("change", handleImportBackups)
 
