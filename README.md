@@ -22,7 +22,7 @@
 
 ---
 
-## 🖼️ Ekran Görüntüleri / Screenshots
+## Ekran Görüntüleri / Screenshots
 
 | | |
 | :---: | :---: |
@@ -31,51 +31,50 @@
 
 ---
 
-## 🌟 Ana Özellikler / Key Features
+## Ana Özellikler / Key Features
 
-### 👾 Retro Pixel Arcade Tasarım & Sesler
-- **Piksel Tasarım Sistemi**: Google Fonts (`Press Start 2P`, `VT323`) ve 16x16 özel piksel SVG ikonlar.
+### Retro Pixel Arcade Tasarım & Sesler
+- **Piksel Tasarım Sistemi**: Google Fonts (Press Start 2P, VT323) ve 16x16 özel piksel SVG ikonlar.
 - **6 Canlı Renk Paleti**: Klasik Yeşil Arcade, Çim Kırmızı, Retro Siber Mavi, Synth 16-Bit Mor, GameBoy Amber, Matris Siyan.
-- **🎵 8-Bit Web Audio Chiptune Efektleri**: Yedek alma, geri yükleme, silme ve tıklamalar için kod tabanlı sentezlenen nostaljik sesler.
+- **8-Bit Web Audio Chiptune Efektleri**: Yedek alma, geri yükleme, silme ve tıklamalar için kod tabanlı sentezlenen nostaljik sesler.
 - **Koyu & Açık Mod**: Retro Kağıt Açık Mod ve Chiptune Arcade Koyu Mod.
 
-### 🚀 Süper Güç Özellikleri / Power Utilities
-- **⚡ Sekme Bellek Tasarrufu (RAM Saver / Lazy Restore)**: Geri yüklenen sekmeleri askıda (`discarded: true`) açarak RAM kullanımını ve donmaları engeller.
-- **🧹 Mükerrer Sekme Temizleyici (Duplicate Tab Cleaner)**: Tüm pencerelerdeki aynı açık URL sekmelerini tek tıkla tarar ve temizler.
-- **🔒 PIN Korumalı Şifreli Kasa**: Hassas yedekleri parola/PIN ile şifreleme (`simpleEncrypt` / `simpleDecrypt`).
-- **🧠 Akıllı Otomatik Kategorileme**: Sekmeleri alan adlarına göre otomatik olarak İş, Eğlence, Alışveriş, Araştırma, Eğitim, Kişisel kategorilerine ayırır.
-- **📌 Domain Kara Listesi (Blacklist)**: Belirtilen domainleri (`localhost`, `127.0.0.1` vb.) yedeklerden otomatik hariç tutar.
-- **🕒 Otomatik Eski Yedek Temizliği (Auto-Prune)**: 7 ila 90 gün arasındaki eski yedekleri otomatik temizler.
-- **☁️ GitHub Gist Bulut Eşitleme**: GitHub PAT tokenı ile cihazlar arası yedek aktarımı.
-- **📋 Markdown Okuma Listesi Kopyalama**: Yedeği tek tıkla okuma listesi formatında (`[Başlık](URL)`) panoya kopyalama.
-- **🪟 Tek Pencere Restorasyonu & Toplu Silme**: Yedeğin sadece istenen penceresini açma veya çoklu yedek silme.
+### Gelişmiş Özellikler / Power Features
+- **Sekme Bellek Tasarrufu (RAM Saver / Lazy Restore)**: Geri yüklenen sekmeleri askıda (discarded) açarak RAM kullanımını ve donmaları engeller.
+- **Mükerrer Sekme Temizleyici (Duplicate Tab Cleaner)**: Tüm pencerelerdeki aynı açık URL sekmelerini tek tıkla tarar ve temizler.
+- **PIN Korumalı Şifreli Kasa**: Hassas yedekleri parola/PIN ile şifreleme.
+- **Akıllı Otomatik Kategorileme**: Sekmeleri alan adlarına göre otomatik olarak İş, Eğlence, Alışveriş, Araştırma, Eğitim, Kişisel kategorilerine ayırır.
+- **Domain Kara Listesi (Blacklist)**: Belirtilen domainleri (localhost, 127.0.0.1 vb.) yedeklerden otomatik hariç tutar.
+- **Otomatik Eski Yedek Temizliği (Auto-Prune)**: 7 ila 90 gün arasındaki eski yedekleri otomatik temizler.
+- **GitHub Gist Bulut Eşitleme**: GitHub PAT tokenı ile cihazlar arası yedek aktarımı.
+- **Markdown Okuma Listesi Kopyalama**: Yedeği tek tıkla okuma listesi formatında ([Başlık](URL)) panoya kopyalama.
+- **Tek Pencere Restorasyonu & Toplu Silme**: Yedeğin sadece istenen penceresini açma veya çoklu yedek silme.
 
 ---
 
-## 🌐 6 Desteklenen Dil / Supported Languages
+## Desteklenen Diller / Supported Languages
 
-- 🇹🇷 **Türkçe**
-- 🇬🇧 **English**
-- 🇰🇷 **한국어 (Korean)**
-- 🇨🇳 **中文 (Chinese)**
-- 🇷🇺 **Русский (Russian)**
-- 🇦🇪 **العربية (Arabic - Native RTL)**
+- Türkçe
+- English
+- 한국어 (Korean)
+- 中文 (Chinese)
+- Русский (Russian)
+- العربية (Arabic - Native RTL)
 
 ---
 
-## 📦 Kurulum ve İndirme / Download & Install
+## Kurulum ve İndirme / Download & Install
 
 TabSaver'ı resmi mağazalardan doğrudan tarayıcınıza ekleyebilirsiniz:
 
-- 🦊 **Firefox:** [Firefox Add-ons](BURAYA_FIREFOX_LINKI)
-- 🌐 **Chrome / Edge / Brave:** [Chrome Web Store](BURAYA_CHROME_LINKI) *(Yakında / Coming Soon)*
+- **Firefox:** [Firefox Add-ons](BURAYA_FIREFOX_LINKI)
+- **Chrome / Edge / Brave:** [Chrome Web Store](BURAYA_CHROME_LINKI) *(Yakında / Coming Soon)*
 
 ---
 
-## 📄 Lisans & Gizlilik / License & Privacy
+## Lisans & Gizlilik / License & Privacy
 
-- Tüm verileriniz yerel tarayıcı depolamanızda saklanır (`storage.local`).
+- Tüm verileriniz yerel tarayıcı depolamanızda saklanır (storage.local).
 - Harici hiçbir sunucuya veri gönderilmez (Kullanıcı tarafından isteğe bağlı GitHub Gist bulut eşitlemesi hariç).
 - Detaylı bilgi için: [Gizlilik Politikası / Privacy Policy](PRIVACY_POLICY.md)
 - Copyright © 2026 TabSaver. All rights reserved.
-
