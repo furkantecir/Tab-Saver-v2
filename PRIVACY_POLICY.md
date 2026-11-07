@@ -76,3 +76,4 @@ If we update this Privacy Policy, the revised version will be posted in this rep
 
 If you have any questions, feedback, or concerns regarding this Privacy Policy, please open an issue on the official GitHub repository:
 - **GitHub:** [https://github.com/furkantecir/Tab-Saver-v2](https://github.com/furkantecir/Tab-Saver-v2)
+
