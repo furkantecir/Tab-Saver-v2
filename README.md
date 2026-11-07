@@ -76,5 +76,6 @@ TabSaver'ı resmi mağazalardan doğrudan tarayıcınıza ekleyebilirsiniz:
 
 - Tüm verileriniz yerel tarayıcı depolamanızda saklanır (`storage.local`).
 - Harici hiçbir sunucuya veri gönderilmez (Kullanıcı tarafından isteğe bağlı GitHub Gist bulut eşitlemesi hariç).
+- Detaylı bilgi için: [Gizlilik Politikası / Privacy Policy](PRIVACY_POLICY.md)
 - Copyright © 2026 TabSaver. All rights reserved.
 
