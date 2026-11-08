@@ -10,11 +10,11 @@
   </p>
 
   <p>
-    <a href="BURAYA_FIREFOX_LINKI" target="_blank" rel="noopener noreferrer">
+    <a href="https://addons.mozilla.org/tr/firefox/addon/sekme-yedekleme/" target="_blank" rel="noopener noreferrer">
       <img src="https://img.shields.io/badge/Firefox-Add--ons-FF7139?style=for-the-badge&logo=firefox-browser&logoColor=white" height="38" alt="Firefox Add-ons">
     </a>
     &nbsp;&nbsp;
-    <a href="" target="_blank" rel="noopener noreferrer">
+    <a href="https://chromewebstore.google.com/detail/gefmmjhimcoghacfjennmdbelkdnppcg?utm_source=item-share-cb" target="_blank" rel="noopener noreferrer">
       <img src="https://img.shields.io/badge/Chrome-Web_Store-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" height="38" alt="Chrome Web Store">
     </a>
   </p>
